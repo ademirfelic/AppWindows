@@ -1,0 +1,29 @@
+FloatLayout:
+    canvas:
+        Rectangle:
+            size: self.size
+            pos: self.pos
+            source:'icones/bg1.png'
+
+    LabelButton:
+        canvas.before:
+            Rectangle:
+                pos: self.pos
+                size: self.size
+                source: 'icones/botao.png' if self.state =='normal' else 'icones/botao_apertado.png'
+        on_release: app.listar_coletas()
+        text:'Buscar'
+        pos_hint: {'right':1, 'top':1}
+        size_hint: 0.2 , 0.2
+
+    ScrollView:
+        pos_hint:{'right': 1, 'top':0.8}
+        size_hint: 1, 1
+        GridLayout:
+            cols: 1
+            id:lista_coleta
+            size_hint_y: None
+            spacing: 2, 2
+            height: self.minimum_height
+            row_default_height:'90dp'
+            row_force_default:True
