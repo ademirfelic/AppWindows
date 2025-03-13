@@ -1,55 +1,29 @@
+#:include kv/coletapage.kv
+#:include kv/homepage.kv
+#:include kv/historicopage.kv
+#:include kv/produtopage.kv
+#:import utils kivy.utils
+
 FloatLayout:
     canvas:
         Rectangle:
             size: self.size
             pos: self.pos
             source:'icones/bg1.png'
-    orientation: "vertical"
-    Spinner:
-        id: lojas
-        text: "Escolha uma opção"
-        values: ["Opção 1", "Opção 2", "Opção 3"]
-        pos_hint: {'right':0.55, 'top':0.95}
-        size_hint: 0.54, 0.1
-        on_text: app.opcao_loja(self, self.text)
-    LabelButton:
-        canvas.before:
-            Rectangle:
-                pos: self.pos
-                size: self.size
-                source: 'icones/botao.png' if self.state =='normal' else 'icones/botao_apertado.png'
-        on_release: app.listar_coletas()
-        text:'Buscar'
-        pos_hint: {'right':1, 'top':1}
-        size_hint: 0.2 , 0.2
-
-    LabelButton:
-        canvas.before:
-            Rectangle:
-                pos: self.pos
-                size: self.size
-                source: 'icones/botao.png' if self.state =='normal' else 'icones/botao_apertado.png'
-        on_release: app.atualizar_tabelas()
-        text:'Atualizar Tabela'
-        pos_hint: {'right':0.2, 'top':0.2}
-        size_hint: 0.2 , 0.2
-
-    ScrollView:
-        pos_hint:{'right': 1, 'top':0.8}
-        size_hint: 1, 1
-        GridLayout:
-            cols: 1
-            id:lista_coleta
-            size_hint_y: None
-            spacing: 2, 2
-            height: self.minimum_height
-            row_default_height:'90dp'
-            row_force_default:True
-
-    Label:
-        id:notificacao
-        text: ''
-        bold: True
-        markup: True
-        pos_hint:{'right':0.9, 'top':0.5}
-        size_hint:0.8, 0.2
+    FloatLayout:
+        ScreenManager:
+            pos_hint:{"right": 1, "top":1}
+            size_hint: 1, 1
+            id: screen_manager
+            HomePage:
+                name:"homepage"
+                id:homepage
+            ColetaPage:
+                name:"coletapage"
+                id: coletapage
+            HistoricoPage:
+                name:"historicopage"
+                id:historicopage
+            ProdutoPage:
+                name:"produtopage"
+                id:produtopage
