@@ -1,0 +1,45 @@
+<HomePage>:
+    FloatLayout:
+        Label:
+            id: menssagem
+            text: ''
+            bold: True
+            markup:True
+            pos_hint: {'right':0.9, 'top':0.35}
+            size_hint: 0.8 , 0.1
+        Spinner:
+            background_normal: ""
+            background_color: (1, 1, 1, 0)
+            canvas.before:
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+                    source: 'icones/botao.png' if self.state =='normal' else 'icones/botao_apertado.png'
+            id: lojas
+            text: "Escolha uma opção"
+            bold: True
+            markup: True
+            values: ["Opção 1", "Opção 2", "Opção 3"]
+            pos_hint: {'right':0.75, 'top':0.65}
+            size_hint: 0.54, 0.2
+            on_release: app.opcao_loja(self, self.text)
+
+        GridLayout:
+            rows:1
+            pos_hint:{'right': 1,'top': 0.12}
+            size_hint: 1, 0.12
+            canvas:
+                Color:
+                    rgb:utils.get_color_from_hex('#006D7E')
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+            ImageButton:
+                source:'icones/upload.png'
+                on_release:app.atualizar_tabela()
+
+            ImageButton:
+                source:'icones/_icone.png'
+                on_release:app.mudar_tela('coletapage')
+
+

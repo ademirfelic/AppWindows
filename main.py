@@ -1,6 +1,7 @@
 import os
 from datetime import datetime
 from kivy.app import App
+from kivy.uix.filechooser import FileChooserListView
 from kivy.lang import Builder
 from botoes import *
 from bannerColeta import *
@@ -10,8 +11,7 @@ import plyer
 import pandas as pd
 
 class MyApp(App):
-    id_usuario = botao =''
-    loja = ''
+    id_usuario = botao = loja = pasta = ''
     lojas = ['Matriz', 'Prudente', 'Cabo Branco', 'Bessa', 'Mossoro','Afonso Pena', 'Princesa Isabel', 'São Paulo']
     tabela = None
     id_tela_anterior = None
@@ -47,6 +47,7 @@ class MyApp(App):
         link = f'https://appbalanco-27229-default-rtdb.firebaseio.com/{self.loja}/.json?leitura={status}'
         requisicao_dic = requests.get(link).json()
         qnt_coleta = False
+        qnti = 0
         for dados in requisicao_dic:
             try:
                 id_usuario = dados
@@ -57,11 +58,13 @@ class MyApp(App):
                         qnt_coleta = True
                         self.root.ids['coletapage'].ids['notificacao'].text =''
                         qnt = len(requisicao_dic[dados]['coletas'][coletas]['coleta'].split(','))
+                        qnti += qnt
                         self.root.ids[id_tela].ids['lista_coleta'].add_widget(
                             BannerColeta(codigo=coletas, nome=nome, quantidade=qnt, id_usuario=id_usuario,
-                                         status= status,id_tela=id_tela))
+                                        status= status,id_tela=id_tela))
             except:
                 pass
+        print(qnti)
         if not qnt_coleta:
             self.root.ids['coletapage'].ids['notificacao'].text = '[color=#FF6666]NÃO HÁ COLETAS[/color]'
 
@@ -79,13 +82,10 @@ class MyApp(App):
                         for cod in coleta:
                             texto += f'{cod[1:]}                       1\n'
 
-                        diretorio = os.path.isfile(f'../COLETA_{nome}.txt')
+                        if self.pasta == '':
+                            self.pasta = plyer.filechooser.choose_dir()[0]
 
-                        if diretorio:
-                            tempo = str(datetime.now()).replace(':', '').replace('-', '').replace(' ', '')[:14]
-                            os.rename(f'../COLETA_{nome}.txt', f'../COLETA_{nome}_{tempo}')
-
-                        with open(f'../COLETA_{nome}.txt', 'w') as arquivo:
+                        with open(f'{self.pasta}\COLETA_{nome}.txt', 'w') as arquivo:
                             arquivo.write(texto)
                         self.excluir_coleta(coletas,dados,id_tela,status)
 
