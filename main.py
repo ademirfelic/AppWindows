@@ -1,5 +1,7 @@
 import os
 from datetime import datetime
+
+from PyInstaller.utils import win32
 from kivy.app import App
 from kivy.uix.filechooser import FileChooserListView
 from kivy.lang import Builder
@@ -81,7 +83,6 @@ class MyApp(App):
                         coleta = requisicao_dic[dados]['coletas'][coletas]['coleta'].split(',')
                         for cod in coleta:
                             texto += f'{cod[1:]}                       1\n'
-
                         if self.pasta == '':
                             self.pasta = plyer.filechooser.choose_dir()[0]
 
